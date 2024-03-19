@@ -14,8 +14,5 @@ public class HelloWorldController {
     public String goodbye() {
         return "Goodbye from Spring Boot!";
     }
-    @RequestMapping("/hi")
-    public String hello() {
-        return "Hello rally!";
-    }
+
 }
