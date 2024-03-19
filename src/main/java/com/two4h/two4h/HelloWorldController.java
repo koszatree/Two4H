@@ -15,5 +15,4 @@ public class HelloWorldController {
         return "Goodbye from Spring Boot!";
     }
 
-    //testing commits.
 }
