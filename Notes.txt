@@ -1,0 +1,42 @@
+Entity:
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Entity
+    @Table(name = "table_name") - which table will be connected with this class
+    @Column(name = "column_name")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTIFY) - for ID
+
+Schema:
+    Controller - creating API and method for service (@RestController)
+    Service - dedicated for data management (@Service)
+
+Dependency injection!
+    @Autowired
+    By setter
+    By constructor
+
+@RequestParam - wants parameters outside application (for DB parameter)
+
+Repository:
+    JpaRepository
+    @Query
+
+
+PostMapping - for saving data
+
+ResponseEntity
+
+
+FRONTEND:
+    html - creting views
+    typescript - data operating
+    css
+    (angular + spring boot crud example) - check this in google
+    (javaguides.net) - search for spring boot + angular tutorial
+    create interface to connect frontend with backend endpoint
+
+
+
+
+26.03 - PREPARE DB Server !!!
