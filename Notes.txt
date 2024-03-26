@@ -1,3 +1,5 @@
+kamil.zielinski@kul.pl
+
 Entity:
     @NoArgsConstructor
     @AllArgsConstructor
@@ -23,7 +25,7 @@ Repository:
     @Query
 
 
-PostMapping - for saving data
+@PostMapping - for saving data
 
 ResponseEntity
 
@@ -36,7 +38,30 @@ FRONTEND:
     (javaguides.net) - search for spring boot + angular tutorial
     create interface to connect frontend with backend endpoint
 
+app directory - contains components
+
+app.component.spec.ts - for tests
+app.component.ts:
+    selector - ...
+    {{name_of_property}} - to put some property on frontend
+
+ng g c component_name - creates component directory
+ng generate  service service_name - creates service directory
+
+app.config.ts > change appConfig to this:
+    export const appConfig: ApplicationConfig = {
+        providers: [provideRouter(routes),
+        provideHttpClient()] };
 
 
+@CrossOrigin(origins = "http://path") - to connect backend with frontend (in controller)
 
-26.03 - PREPARE DB Server !!!
+
+constructor(private http: HttpClient){
+    this.testUrl = 'http://path'
+}
+
+Frontend loop:
+    <tr *ngFor="let test of tests">
+        <td>{{test.id}}</td>
+    </tr>
