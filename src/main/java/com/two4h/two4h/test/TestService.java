@@ -21,8 +21,8 @@ public class TestService {
     private LinkedList<TestEntity> testList;
 
     private void initTestList(){
-        testList.add(new TestEntity("ONE"));
-        testList.add(new TestEntity("TWO"));
+        testList.add(new TestEntity("ONE",1));
+        testList.add(new TestEntity("TWO",2));
     }
 
     public LinkedList<TestEntity> getTestList() {

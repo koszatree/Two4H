@@ -1,18 +1,13 @@
 package com.two4h.two4h.test;
 
-//@Getter
-//@Setter
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
 public class TestEntity {
     private String name;
-
-    public TestEntity(String name) {
-        this.name = name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-    public String getName() {
-        return name;
-    }
+    private int id;
 }
