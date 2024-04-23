@@ -16,7 +16,6 @@ public class UserService {
 
     public String registerUser(User user) {
         User newUser = new User(user.getId(), user.getFirstName(), user.getLastName(), user.getBirthDate(), user.getEmail(), user.getPassword());
-
         userRepository.save(newUser);
 
         return newUser.getFirstName();

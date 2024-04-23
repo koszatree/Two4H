@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/user")
+@RequestMapping("/api")
 public class UserController {
 
     @Autowired
@@ -16,6 +16,7 @@ public class UserController {
 
     @PostMapping(path = "/save")
     public String saveRegisterData(@RequestBody User user){
+        System.out.println("CONTROLER:\n" + user.getId() + "\n" + user.getFirstName()+ "\n" + user.getLastName()+ "\n" + user.getBirthDate()+ "\n" + user.getEmail()+ "\n" + user.getPassword());
         String id = userService.registerUser(user);
         return id;
     }
