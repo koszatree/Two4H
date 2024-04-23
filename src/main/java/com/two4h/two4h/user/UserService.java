@@ -15,7 +15,7 @@ public class UserService {
     private UserRepository userRepository;
 
     public String registerUser(User user) {
-        User newUser = new User(user.getId(), user.getFirstName(), user.getLastName(), user.getBirthDate(), user.getEmail(), user.getPassword());
+        User newUser = new User(user.getId(), user.getFirstName(), user.getLastName(), user.getBirthDate(), user.getEmail(), user.getPassword(), true);
 
         userRepository.save(newUser);
 
@@ -38,8 +38,12 @@ public class UserService {
                 Optional<User> userOptional = userRepository.findOneByEmailAndPassword(login.getEmail(), login.getPassword());
 
                 if (userOptional.isPresent()) {
-                    return new LoginResponse("User", true);
-
+                    if(userOptional.get().getIsCustomer()) {
+                        return new LoginResponse("Customer", true);
+                    }
+                    else {
+                        return new LoginResponse("Seller", true);
+                    }
                 } else {
                     return new LoginResponse("Login Failed", false);
                 }

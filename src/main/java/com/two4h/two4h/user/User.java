@@ -2,10 +2,8 @@ package com.two4h.two4h.user;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.Date;
 
@@ -25,6 +23,8 @@ public class User {
     private Date birthDate;
     private String email;
     private String password;
+    @Value("true")
+    private Boolean isCustomer;
 
     public User(String firstName, String lastName, Date birthDate, String email, String password) {
         this.firstName = firstName;
