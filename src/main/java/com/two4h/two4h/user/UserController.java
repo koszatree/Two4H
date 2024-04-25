@@ -16,8 +16,7 @@ public class UserController {
 
     @PostMapping(path = "/save")
     public String saveRegisterData(@RequestBody User user){
-        String id = userService.registerUser(user);
-        return id;
+        return userService.registerUser(user);
     }
 
     @PostMapping(path = "/login")
