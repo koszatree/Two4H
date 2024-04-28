@@ -3,9 +3,9 @@ package com.two4h.two4h.user;
 import com.two4h.two4h.registration.Login;
 import com.two4h.two4h.registration.LoginResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -53,5 +53,9 @@ public class UserService {
         } else {
             return new LoginResponse("Incorrect Email", false);
         }
+    }
+
+    public List<User> displayAllUsers() {
+        return this.userRepository.findAll();
     }
 }
