@@ -58,4 +58,24 @@ public class UserService {
     public List<User> displayAllUsers() {
         return this.userRepository.findAll();
     }
+
+    public String editUser(User choosenUser) {
+        if(userRepository.existsById(choosenUser.getId())) {
+            User editedUser = userRepository.findById(choosenUser.getId()).get();
+            editedUser.setFirstName(choosenUser.getFirstName());
+            editedUser.setLastName(choosenUser.getLastName());
+            editedUser.setBirthDate(choosenUser.getBirthDate());
+            editedUser.setEmail(choosenUser.getEmail());
+            editedUser.setPassword(choosenUser.getPassword());
+            editedUser.setIsCustomer(choosenUser.getIsCustomer());
+
+            userRepository.save(editedUser);
+
+            return "User Updated Successfully";
+        }
+
+        return "User Not Found";
+    }
+
+
 }

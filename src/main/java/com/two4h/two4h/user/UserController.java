@@ -5,9 +5,7 @@ import com.two4h.two4h.registration.LoginResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -32,5 +30,10 @@ public class UserController {
     @GetMapping(path = "/userData")
     public List<User> getUserData() {
         return userService.displayAllUsers();
+    }
+
+    @PutMapping("/edit/{id}")
+    public String updateUserData(@PathVariable int id, @RequestBody User user){
+        return userService.editUser(user);
     }
 }
