@@ -65,3 +65,50 @@ Frontend loop:
     <tr *ngFor="let test of tests">
         <td>{{test.id}}</td>
     </tr>
+
+
+@Value("${variable_value}")
+String variable;
+
+
+Endpoints - call from Service
+Controller - call Service
+
+
+
+
+************************************ FUNKCJONALNOŚCI **************************************
+Rejestracja                                                                                 [DONE]
+Logowanie                                                                                   [DONE]
+
+Ochrona przed wejściem na podstronę bez uprawnień (bez zalogowania na odpowiednie konto)    [W TRAKCIE]
+
+Strona główna                                                                               [DONE]
+
+Panel admina: Wyświetlanie danych użytkowników                                              [FRONTEND DO ZROBIENIA]
+              Edycja danych użytkowników                                                    [FRONTEND DO ZROBIENIA]
+              Dodawanie sklepów                                                             [X]
+              Wyświetlanie listy sklepów                                                    [X]
+              Edycja danych sklepów                                                         [X]
+              Wyświetlanie listy produktów                                                  [X]
+              Dodawanie produktów                                                           [X]
+              Edycja produktów                                                              [X]
+              Wyświetlanie listy tranzakcji                                                 [X]
+              Edycja listy tranzakcji                                                       [?]
+
+Panel sprzedającego: Wyświetlanie produktów ze sklepu                                       [X]
+                     Zarządaznie listą produktów w sklepie                                  [X]
+
+Panel klienta:      Wyświetlanie listy sklepów                                              [X]
+                    Wyświetlanie listy produktów w sklepach                                 [X]
+                    Dodawanie produktów do koszyka                                          [X]
+                    Składanie zamówień                                                      [?]
+                    Sprawdzanie historii zamówień                                           [X]
+
+
+** Legenda:
+    [DONE] - funkcjonalność w pełni zaimplementowana
+    [W TRAKCIE] - funkcjonalność w fazie dodawania
+    [FRONTEND DO ZROBIENIA] - serio muszę to tłumaczyć?
+    [X] - funkcjonalność nie zaimplementowana
+    [?] - funkcjonalność do obgadania
