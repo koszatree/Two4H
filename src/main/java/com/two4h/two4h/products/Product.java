@@ -1,11 +1,16 @@
 package com.two4h.two4h.products;
 
-import com.two4h.two4h.shops.Shops;
+import com.two4h.two4h.shops.Shop;
 import jakarta.persistence.*;
-
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+@NoArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "Products")
-public class Products {
+public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,9 +26,9 @@ public class Products {
 
     @ManyToOne
     @JoinColumn(name = "shop_id")
-    private Shops shop;
+    private Shop shop;
 
-    public Products(Long productId, String productName, String productDescription, double price, int stock, Shops shop) {
+    public Product(Long productId, String productName, String productDescription, double price, int stock, Shop shop) {
         this.productId = productId;
         this.productName = productName;
         this.productDescription = productDescription;

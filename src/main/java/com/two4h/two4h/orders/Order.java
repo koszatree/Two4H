@@ -1,15 +1,20 @@
 package com.two4h.two4h.orders;
 
-import com.two4h.two4h.products.Products;
+import com.two4h.two4h.products.Product;
 import com.two4h.two4h.user.User;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Date;
 import java.util.Set;
-
+@NoArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "Orders")
-public class Orders {
+public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,9 +36,9 @@ public class Orders {
             joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id")
     )
-    private Set<Products> products;
+    private Set<Product> products;
 
-    public Orders(Long orderId, User user, Date orderDate, String orderStatus, double orderTotal, Set<Products> products) {
+    public Order(Long orderId, User user, Date orderDate, String orderStatus, double orderTotal, Set<Product> products) {
         this.orderId = orderId;
         this.user = user;
         this.orderDate = orderDate;
