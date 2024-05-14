@@ -18,7 +18,7 @@ public class UserService {
         if(userRepository.findByEmail(user.getEmail()) != null){
             return "This email is already in use";
         }
-        User newUser = new User(user.getUserId(), user.getFirstName(), user.getLastName(), user.getBirthDate(), user.getEmail(), user.getPassword(), true, true);
+        User newUser = new User(user.getId(), user.getFirstName(), user.getLastName(), user.getBirthDate(), user.getEmail(), user.getPassword(), true, true);
         userRepository.save(newUser);
 
         return newUser.getFirstName();
@@ -62,14 +62,21 @@ public class UserService {
     }
 
     public String editUser(User choosenUser) {
-        if(userRepository.existsById(choosenUser.getUserId())) {
+        if(userRepository.existsById(choosenUser.getId())) {
 
-            if(userRepository.findByEmail(choosenUser.getEmail()).getEmail().equals(choosenUser.getEmail()) &&
-                    userRepository.findByEmail(choosenUser.getEmail()).getUserId() != choosenUser.getUserId()) {
+            User userToCheck = userRepository.findByEmail(choosenUser.getEmail());
+
+            if (userToCheck.getEmail().equals(choosenUser.getEmail()) && userToCheck.getId() != choosenUser.getId()) {
                 return "This email is already in use";
             }
 
-            User editedUser = userRepository.findById(choosenUser.getUserId()).get();
+
+//            if(userRepository.findByEmail(choosenUser.getEmail()).getEmail().equals(choosenUser.getEmail()) &&
+//                    userRepository.findByEmail(choosenUser.getEmail()).getUserId() != choosenUser.getUserId()) {
+//                return "This email is already in use";
+//            }
+
+            User editedUser = userRepository.findById(choosenUser.getId()).get();
             editedUser.setFirstName(choosenUser.getFirstName());
             editedUser.setLastName(choosenUser.getLastName());
             editedUser.setBirthDate(choosenUser.getBirthDate());
