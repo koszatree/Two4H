@@ -15,8 +15,10 @@ public class UserService {
     private UserRepository userRepository;
 
     public String registerUser(User user) {
-        User newUser = new User(user.getUserId(), user.getFirstName(), user.getLastName(), user.getBirthDate(), user.getEmail(), user.getPassword(), true);
-
+        if(userRepository.findByEmail(user.getEmail()) != null){
+            return "This email is already in use";
+        }
+        User newUser = new User(user.getUserId(), user.getFirstName(), user.getLastName(), user.getBirthDate(), user.getEmail(), user.getPassword(), true, true);
         userRepository.save(newUser);
 
         return newUser.getFirstName();
@@ -37,7 +39,7 @@ public class UserService {
             if (isPasswordRight) {
                 Optional<User> userOptional = userRepository.findOneByEmailAndPassword(login.getEmail(), login.getPassword());
 
-                if (userOptional.isPresent()) {
+                if (userOptional.isPresent() /*&& userOptional.get().getIsActive()*/) {
                     if(userOptional.get().getIsCustomer()) {
                         return new LoginResponse("Customer", true);
                     }
@@ -61,6 +63,12 @@ public class UserService {
 
     public String editUser(User choosenUser) {
         if(userRepository.existsById(choosenUser.getUserId())) {
+
+            if(userRepository.findByEmail(choosenUser.getEmail()).getEmail().equals(choosenUser.getEmail()) &&
+                    userRepository.findByEmail(choosenUser.getEmail()).getUserId() != choosenUser.getUserId()) {
+                return "This email is already in use";
+            }
+
             User editedUser = userRepository.findById(choosenUser.getUserId()).get();
             editedUser.setFirstName(choosenUser.getFirstName());
             editedUser.setLastName(choosenUser.getLastName());
@@ -68,6 +76,7 @@ public class UserService {
             editedUser.setEmail(choosenUser.getEmail());
             editedUser.setPassword(choosenUser.getPassword());
             editedUser.setIsCustomer(choosenUser.getIsCustomer());
+            editedUser.setIsActive(choosenUser.getIsActive());
 
             userRepository.save(editedUser);
 
@@ -76,6 +85,5 @@ public class UserService {
 
         return "User Not Found";
     }
-
 
 }

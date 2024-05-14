@@ -25,6 +25,8 @@ public class User {
     private String password;
     @Value("true")
     private Boolean isCustomer;
+    @Value("true")
+    private Boolean isActive;
 
     public User(String firstName, String lastName, Date birthDate, String email, String password) {
         this.firstName = firstName;

@@ -32,8 +32,8 @@ public class UserController {
         return userService.displayAllUsers();
     }
 
-    @PutMapping("/edit/{id}")
-    public String updateUserData(@PathVariable int id, @RequestBody User user){
+    @PutMapping("/edit")
+    public String updateUserData(@RequestBody User user){
         return userService.editUser(user);
     }
 }
