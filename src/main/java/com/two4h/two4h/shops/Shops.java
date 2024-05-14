@@ -17,10 +17,15 @@ public class Shops {
     @JoinColumn(name = "user_id")
     private User owner;
 
-    public Shops(Long shopId, String shopName, User owner) {
+    private double latitude;
+    private double longtude;
+
+    public Shops(Long shopId, String shopName, User owner, double latitude, double longtude) {
         this.shopId = shopId;
         this.shopName = shopName;
         this.owner = owner;
+        this.latitude = latitude;
+        this.longtude = longtude;
     }
 }
 
