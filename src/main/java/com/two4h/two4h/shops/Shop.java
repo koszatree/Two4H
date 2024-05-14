@@ -14,7 +14,7 @@ public class Shop {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long shopId;
+    private Long id;
 
     private String shopName;
 
@@ -26,7 +26,7 @@ public class Shop {
     private double longtude;
 
     public Shop(Long shopId, String shopName, User owner, double latitude, double longtude) {
-        this.shopId = shopId;
+        this.id = shopId;
         this.shopName = shopName;
         this.owner = owner;
         this.latitude = latitude;
