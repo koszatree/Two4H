@@ -15,7 +15,7 @@ public class UserService {
     private UserRepository userRepository;
 
     public String registerUser(User user) {
-        User newUser = new User(user.getId(), user.getFirstName(), user.getLastName(), user.getBirthDate(), user.getEmail(), user.getPassword(), true);
+        User newUser = new User(user.getUserId(), user.getFirstName(), user.getLastName(), user.getBirthDate(), user.getEmail(), user.getPassword(), true);
 
         userRepository.save(newUser);
 
@@ -60,8 +60,8 @@ public class UserService {
     }
 
     public String editUser(User choosenUser) {
-        if(userRepository.existsById(choosenUser.getId())) {
-            User editedUser = userRepository.findById(choosenUser.getId()).get();
+        if(userRepository.existsById(choosenUser.getUserId())) {
+            User editedUser = userRepository.findById(choosenUser.getUserId()).get();
             editedUser.setFirstName(choosenUser.getFirstName());
             editedUser.setLastName(choosenUser.getLastName());
             editedUser.setBirthDate(choosenUser.getBirthDate());
