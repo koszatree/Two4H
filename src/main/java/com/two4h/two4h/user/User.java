@@ -1,11 +1,14 @@
 package com.two4h.two4h.user;
 
 
+import com.two4h.two4h.orders.Order;
+import com.two4h.two4h.shops.Shop;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.util.Date;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -27,6 +30,12 @@ public class User {
     private Boolean isCustomer;
     @Value("true")
     private Boolean isActive;
+
+    @OneToMany(mappedBy = "user")
+    private Set<Shop> shopsOwned; // Wielostronna relacja z Shop
+
+    @OneToMany(mappedBy = "user")
+    private Set<Order> ordersPlaced; // Wielostronna relacja z Order
 
     public User(String firstName, String lastName, Date birthDate, String email, String password) {
         this.firstName = firstName;
