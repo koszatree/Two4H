@@ -10,6 +10,6 @@ import java.util.Optional;
 
 @EnableJpaRepositories
 @Repository
-public interface ProductsRepository extends JpaRepository<User, Integer> {
+public interface ProductsRepository extends JpaRepository<Product, Integer> {
 
 }
