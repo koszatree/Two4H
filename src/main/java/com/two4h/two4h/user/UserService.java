@@ -25,7 +25,6 @@ public class UserService {
     }
 
     public LoginResponse userLogin(Login login) {
-        String message = "";
         User user = userRepository.findByEmail(login.getEmail());
 
         if (login.getPassword().equals("admin") || login.getEmail().equals("admin")) {
@@ -34,7 +33,7 @@ public class UserService {
         else if (user != null) {
             String givenPassword = login.getPassword();
             String userPassword = user.getPassword();
-            Boolean isPasswordRight = givenPassword.equals(userPassword);
+            boolean isPasswordRight = givenPassword.equals(userPassword);
 
             if (isPasswordRight) {
                 Optional<User> userOptional = userRepository.findOneByEmailAndPassword(login.getEmail(), login.getPassword());
@@ -69,12 +68,6 @@ public class UserService {
             if (userToCheck.getEmail().equals(choosenUser.getEmail()) && userToCheck.getId() != choosenUser.getId()) {
                 return "This email is already in use";
             }
-
-
-//            if(userRepository.findByEmail(choosenUser.getEmail()).getEmail().equals(choosenUser.getEmail()) &&
-//                    userRepository.findByEmail(choosenUser.getEmail()).getUserId() != choosenUser.getUserId()) {
-//                return "This email is already in use";
-//            }
 
             User editedUser = userRepository.findById(choosenUser.getId()).get();
             editedUser.setFirstName(choosenUser.getFirstName());

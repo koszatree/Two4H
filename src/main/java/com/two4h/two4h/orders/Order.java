@@ -21,7 +21,7 @@ public class Order {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id") // powiązać po Order
+    @JoinColumn(name = "user_id")
     private User user;
 
     private Date orderDate;

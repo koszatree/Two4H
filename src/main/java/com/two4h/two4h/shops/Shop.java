@@ -21,9 +21,10 @@ public class Shop {
     private Long id;
 
     private String shopName;
-
+    // Relacja w jedną stronę sklep > user
+    // mapped by shops
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "id")
     private User owner;
 
     private double latitude;
