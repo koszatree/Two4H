@@ -6,10 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
 @EnableJpaRepositories
 @Repository
-public interface ProductsRepository extends JpaRepository<User, Integer> {
+public interface ProductRepository extends JpaRepository<User, Integer> {
 
 }
