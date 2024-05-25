@@ -18,7 +18,7 @@ public class Shop {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     private String shopName;
     // Relacja w jedną stronę sklep > user
@@ -33,10 +33,10 @@ public class Shop {
     @OneToMany(mappedBy = "shop")
     private Set<Product> products; // Wielostronna relacja z Product
 
-    public Shop(Long shopId, String shopName, User owner, double latitude, double longtude) {
-        this.id = shopId;
+    public Shop(String shopName, User owner,Set<Product> products, double latitude, double longtude) {
         this.shopName = shopName;
         this.owner = owner;
+        this.products = products;
         this.latitude = latitude;
         this.longtude = longtude;
     }

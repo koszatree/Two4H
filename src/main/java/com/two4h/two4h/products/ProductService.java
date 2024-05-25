@@ -19,11 +19,12 @@ public class ProductService {
 
     public String editProduct(Product product) {
         Product productToCheck = productRepository.findByProductName(product.getProductName()).orElse(null);
-        if(productToCheck != null && productToCheck.getId().equals(product.getId())){
+        assert productToCheck != null;
+        if(productToCheck.getProductName().equals(product.getProductName()) && productToCheck.getId() != (product.getId())){
             return "This Product Already Exists";
         }
 
-        Product productToEdit = productRepository.findById(product.getId());
+        Product productToEdit = productRepository.findById(product.getId()).get();
         productToEdit.setProductName(product.getProductName());
         productToEdit.setProductDescription(product.getProductDescription());
         productToEdit.setPrice(product.getPrice());

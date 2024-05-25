@@ -14,6 +14,5 @@ import java.util.Optional;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer> {
     Optional<Product> findByProductName(String productName);
-    Product findById(Long Id);
     List<Product> findAllByIsActive(boolean isActive);
 }
