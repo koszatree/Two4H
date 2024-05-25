@@ -37,7 +37,7 @@ public class User {
     @OneToMany(mappedBy = "user")
     private Set<Order> ordersPlaced; // Wielostronna relacja z Order
 
-    public User(String firstName, String lastName, Date birthDate, String email, String password) {
+    public User(String firstName, String lastName, Date birthDate, String email, String password, Set<Shop> shopsOwned, Set<Order> ordersPlaced) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;

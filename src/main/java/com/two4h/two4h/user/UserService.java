@@ -18,7 +18,7 @@ public class UserService {
         if(userRepository.findByEmail(user.getEmail()) != null){
             return "This email is already in use";
         }
-        User newUser = new User(user.getId(), user.getFirstName(), user.getLastName(), user.getBirthDate(), user.getEmail(), user.getPassword(), true, true);
+        User newUser = new User(user.getId(), user.getFirstName(), user.getLastName(), user.getBirthDate(), user.getEmail(), user.getPassword(), true, true, null, null);
         userRepository.save(newUser);
 
         return newUser.getFirstName();

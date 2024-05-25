@@ -38,5 +38,9 @@ public class Product {
         this.shop = shop;
         this.isActive = isActive;
     }
+
+    public boolean getIsActive() {
+        return isActive;
+    }
 }
 
