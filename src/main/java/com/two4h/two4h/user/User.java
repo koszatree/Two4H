@@ -31,7 +31,7 @@ public class User {
     @Value("true")
     private Boolean isActive;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "owner")
     private Set<Shop> shopsOwned; // Wielostronna relacja z Shop
 
     @OneToMany(mappedBy = "user")

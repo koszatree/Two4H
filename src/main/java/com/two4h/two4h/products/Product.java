@@ -27,7 +27,7 @@ public class Product {
     private boolean isActive;
 
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "shop_id")
     private Shop shop;
 
     public Product(String productName, String productDescription, double price, int stock, Shop shop, boolean isActive) {
