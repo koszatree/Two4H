@@ -18,7 +18,7 @@ public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -38,8 +38,7 @@ public class Order {
     )
     private Set<Product> products;
 
-    public Order(Long orderId, User user, Date orderDate, String orderStatus, double orderTotal, Set<Product> products) {
-        this.id = orderId;
+    public Order(User user, Date orderDate, String orderStatus, double orderTotal, Set<Product> products) {
         this.user = user;
         this.orderDate = orderDate;
         this.orderStatus = orderStatus;
