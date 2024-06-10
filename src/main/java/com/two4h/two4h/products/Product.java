@@ -24,11 +24,11 @@ public class Product {
 
     private int stock;
 
-    private boolean isActive;
-
     @ManyToOne
     @JoinColumn(name = "shop_id")
     private Shop shop;
+
+    private boolean isActive;
 
     public Product(String productName, String productDescription, double price, int stock, Shop shop, boolean isActive) {
         this.productName = productName;

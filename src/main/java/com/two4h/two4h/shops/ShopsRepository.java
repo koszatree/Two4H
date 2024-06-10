@@ -13,6 +13,6 @@ import java.util.Optional;
 @EnableJpaRepositories
 @Repository
 public interface ShopsRepository extends JpaRepository<Shop, Integer> {
-    Optional<Shop> findByName(String name);
-    List<Shop> findAllBiIsActive(boolean isActive);
+    Optional<Shop> findByShopName(String name);
+    List<Shop> findAllByIsActive(boolean isActive);
 }

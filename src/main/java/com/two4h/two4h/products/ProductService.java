@@ -1,17 +1,19 @@
 package com.two4h.two4h.products;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class ProductService {
+    @Autowired
     private ProductRepository productRepository;
 
     public String addProduct(Product product) {
-        if(productRepository.findByProductName(product.getProductName()).isPresent()){
-            return "Product Already Exists";
-        }
+//        if(productRepository.findByProductName(product.getProductName()).isPresent()){
+//            return "Product Already Exists";
+//        }
         Product newProduct = new Product(product.getProductName(), product.getProductDescription(), product.getPrice(), product.getStock(), null, true);
         productRepository.save(newProduct);
         return "Product added successfully";

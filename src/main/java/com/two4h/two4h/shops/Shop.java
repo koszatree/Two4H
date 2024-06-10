@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.Set;
 
@@ -30,15 +31,19 @@ public class Shop {
     private double latitude;
     private double longtude;
 
+    @Value("true")
+    private boolean isActive;
+
     @OneToMany(mappedBy = "shop")
     private Set<Product> products; // Wielostronna relacja z Product
 
-    public Shop(String shopName, User owner,Set<Product> products, double latitude, double longtude) {
+    public Shop(String shopName, User owner,Set<Product> products, double latitude, double longtude, boolean isActive) {
         this.shopName = shopName;
         this.owner = owner;
         this.products = products;
         this.latitude = latitude;
         this.longtude = longtude;
+        this.isActive = isActive;
     }
 }
 

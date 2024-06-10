@@ -1,5 +1,6 @@
 package com.two4h.two4h.shops;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -7,13 +8,14 @@ import java.util.Objects;
 
 @Service
 public class ShopService {
+    @Autowired
     private ShopsRepository shopsRepository;
 
     public String addShop(Shop shop) {
-        if(shopsRepository.findByName(shop.getShopName()).isPresent()){
+        if(shopsRepository.findByShopName(shop.getShopName()).isPresent()){
             return "Shop already exists";
         }
-        Shop newShop = new Shop(shop.getShopName(), shop.getOwner(), null, shop.getLatitude(), shop.getLongtude());
+        Shop newShop = new Shop(shop.getShopName(), shop.getOwner(), null, shop.getLatitude(), shop.getLongtude(), true);
         shopsRepository.save(newShop);
 
         return "Shop added successfully";
@@ -24,7 +26,7 @@ public class ShopService {
     }
 
     public String shopEdit(Shop shop) {
-        Shop shopToCheck = shopsRepository.findByName(shop.getShopName()).orElse(null);
+        Shop shopToCheck = shopsRepository.findByShopName(shop.getShopName()).orElse(null);
         assert shopToCheck != null;
         if(shopToCheck.getShopName().equals(shop.getShopName()) && shopToCheck.getId() != (shop.getId())){
             return "Shop already exists";
@@ -42,6 +44,6 @@ public class ShopService {
     }
 
     public List<Shop> getActiveShops() {
-        return this.shopsRepository.findAllBiIsActive(true);
+        return this.shopsRepository.findAllByIsActive(true);
     }
 }
