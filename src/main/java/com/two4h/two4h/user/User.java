@@ -1,6 +1,8 @@
 package com.two4h.two4h.user;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.two4h.two4h.orders.Order;
 import com.two4h.two4h.shops.Shop;
 import jakarta.persistence.*;
@@ -32,9 +34,12 @@ public class User {
     private Boolean isActive;
 
     @OneToMany(mappedBy = "owner")
+    @JsonManagedReference("user-shops")
+    @JsonIgnoreProperties("owner")
     private Set<Shop> shopsOwned; // Wielostronna relacja z Shop
 
     @OneToMany(mappedBy = "user")
+    @JsonManagedReference("user-orders")
     private Set<Order> ordersPlaced; // Wielostronna relacja z Order
 
     public User(String firstName, String lastName, Date birthDate, String email, String password, Set<Shop> shopsOwned, Set<Order> ordersPlaced) {

@@ -14,7 +14,7 @@ public class ProductService {
 //        if(productRepository.findByProductName(product.getProductName()).isPresent()){
 //            return "Product Already Exists";
 //        }
-        Product newProduct = new Product(product.getProductName(), product.getProductDescription(), product.getPrice(), product.getStock(), null, true);
+        Product newProduct = new Product(product.getProductName(), product.getProductDescription(), product.getPrice(), product.getStock(), product.getImage(), null, true);
         productRepository.save(newProduct);
         return "Product added successfully";
     }
@@ -31,6 +31,7 @@ public class ProductService {
         productToEdit.setProductDescription(product.getProductDescription());
         productToEdit.setPrice(product.getPrice());
         productToEdit.setStock(product.getStock());
+        productToEdit.setImage(product.getImage());
         productToEdit.setShop(product.getShop());
         productToEdit.setActive(product.getIsActive());
 

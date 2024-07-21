@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin
@@ -32,8 +33,14 @@ public class UserController {
         return userService.displayAllUsers();
     }
 
+    @GetMapping(path = "/userByIdData")
+    @ResponseBody
+    public Optional<User> getUserById(@RequestParam("id") int id) {
+        return userService.getUserById(id);
+    }
+
     @PutMapping("/edit")
-    public String updateUserData(@RequestBody User user){
-        return userService.editUser(user);
+    public String updateUserData(@RequestParam("id") int id, @RequestBody User user){
+        return userService.editUser(id, user);
     }
 }

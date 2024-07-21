@@ -60,8 +60,15 @@ public class UserService {
         return this.userRepository.findAll();
     }
 
-    public String editUser(User choosenUser) {
-        if(userRepository.existsById(choosenUser.getId())) {
+    public Optional<User> getUserById(int id) {
+        if (this.userRepository.findById(id).isPresent()) {
+            return this.userRepository.findById(id);
+        }
+        return Optional.empty();
+    }
+
+    public String editUser(int id, User choosenUser) {
+        if(userRepository.existsById(id)) {
 
             User userToCheck = userRepository.findByEmail(choosenUser.getEmail());
 
@@ -69,7 +76,7 @@ public class UserService {
                 return "This email is already in use";
             }
 
-            User editedUser = userRepository.findById(choosenUser.getId()).get();
+            User editedUser = userRepository.findById(id).get();
             editedUser.setFirstName(choosenUser.getFirstName());
             editedUser.setLastName(choosenUser.getLastName());
             editedUser.setBirthDate(choosenUser.getBirthDate());
@@ -79,7 +86,7 @@ public class UserService {
             editedUser.setIsActive(choosenUser.getIsActive());
 
             userRepository.save(editedUser);
-
+            System.out.println("User with id: " + editedUser.getId() + " has been updated");
             return "User Updated Successfully";
         }
 

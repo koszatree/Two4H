@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class ShopService {
@@ -15,7 +14,7 @@ public class ShopService {
         if(shopsRepository.findByShopName(shop.getShopName()).isPresent()){
             return "Shop already exists";
         }
-        Shop newShop = new Shop(shop.getShopName(), shop.getOwner(), null, shop.getLatitude(), shop.getLongtude(), true);
+        Shop newShop = new Shop(shop.getShopName(), shop.getOwner(), null, shop.getLatitude(), shop.getLongitude(), true);
         shopsRepository.save(newShop);
 
         return "Shop added successfully";
@@ -37,7 +36,7 @@ public class ShopService {
         shopToEdit.setOwner(shop.getOwner());
         shopToEdit.setProducts(shop.getProducts());
         shopToEdit.setLatitude(shop.getLatitude());
-        shopToEdit.setLongtude(shop.getLongtude());
+        shopToEdit.setLongitude(shop.getLongitude());
         shopsRepository.save(shopToEdit);
 
         return "Shop edited successfully";

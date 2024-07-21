@@ -1,5 +1,7 @@
 package com.two4h.two4h.orders;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.two4h.two4h.products.Product;
 import com.two4h.two4h.user.User;
 import jakarta.persistence.*;
@@ -22,6 +24,7 @@ public class Order {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonBackReference("user-orders")
     private User user;
 
     private Date orderDate;
@@ -36,6 +39,7 @@ public class Order {
             joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id")
     )
+
     private Set<Product> products;
 
     public Order(User user, Date orderDate, String orderStatus, double orderTotal, Set<Product> products) {
