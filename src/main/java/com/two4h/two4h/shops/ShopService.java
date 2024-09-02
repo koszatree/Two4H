@@ -14,7 +14,7 @@ public class ShopService {
         if(shopsRepository.findByShopName(shop.getShopName()).isPresent()){
             return "Shop already exists";
         }
-        Shop newShop = new Shop(shop.getShopName(), shop.getOwner(), null, shop.getLatitude(), shop.getLongitude(), true);
+        Shop newShop = new Shop(shop.getShopName(), shop.getOwner(), null, shop.getLatitude(), shop.getLongtude(), true);
         shopsRepository.save(newShop);
 
         return "Shop added successfully";
@@ -36,7 +36,7 @@ public class ShopService {
         shopToEdit.setOwner(shop.getOwner());
         shopToEdit.setProducts(shop.getProducts());
         shopToEdit.setLatitude(shop.getLatitude());
-        shopToEdit.setLongitude(shop.getLongitude());
+        shopToEdit.setLongtude(shop.getLongtude());
         shopsRepository.save(shopToEdit);
 
         return "Shop edited successfully";

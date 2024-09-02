@@ -34,7 +34,7 @@ public class Shop {
     private User owner;
 
     private double latitude;
-    private double longitude;
+    private double longtude;
 
     @Value("true")
     private boolean isActive;
@@ -48,7 +48,7 @@ public class Shop {
         this.owner = owner;
         this.products = products;
         this.latitude = latitude;
-        this.longitude = longitude;
+        this.longtude = longitude;
         this.isActive = isActive;
     }
 }
