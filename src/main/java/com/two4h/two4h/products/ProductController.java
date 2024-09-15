@@ -42,7 +42,7 @@ public class ProductController {
     }
 
     @PutMapping(path = "/editProduct")
-    public String editProduct(@RequestParam("id") int id, @RequestBody Product product) {
+    public String editProduct(@RequestParam("id") int id, @RequestBody ProductDTO product) {
         return productService.editProduct(id, product);
     }
 }

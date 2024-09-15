@@ -1,5 +1,8 @@
 package com.two4h.two4h.products;
 
+import com.two4h.two4h.shops.Shop;
+import com.two4h.two4h.shops.ShopService;
+import com.two4h.two4h.shops.ShopsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -14,6 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -21,33 +25,50 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private ShopsRepository shopsRepository;
+
     public String addProduct(Product product) {
-//        if(productRepository.findByProductName(product.getProductName()).isPresent()){
-//            return "Product Already Exists";
-//        }
+        if(productRepository.existsByProductName(product.getProductName())){
+            return "Product Already Exists";
+        }
         Product newProduct = new Product(product.getProductName(), product.getProductDescription(), product.getPrice(), product.getStock(), product.getImage(), null, true);
         productRepository.save(newProduct);
         return "Product added successfully";
     }
 
-    public String editProduct(int id, Product product) {
+    public String editProduct(int id, ProductDTO productDTO) {
         if (productRepository.existsById(id)) {
+            // Check if a product with the same name already exists, except for the one being updated
+            Product existingProduct = productRepository.findByProductName(productDTO.getProductName());
 
-//            Product productToCheck = productRepository.findByProductName(product.getProductName());
-//
-//            if(productToCheck == null && productToCheck.getId() != (product.getId())){
-//                return "This Product Already Exists";
-//            }
+            if (existingProduct != null && existingProduct.getId() != id) {
+                return "This Product Already Exists";
+            }
 
+            // Fetch the product to be edited
             Product productToEdit = productRepository.findById(id).get();
-            productToEdit.setProductName(product.getProductName());
-            productToEdit.setProductDescription(product.getProductDescription());
-            productToEdit.setPrice(product.getPrice());
-            productToEdit.setStock(product.getStock());
-            //productToEdit.setImage(product.getImage());
-            //productToEdit.setShop(product.getShop());
-            productToEdit.setActive(product.getIsActive());
 
+            // Update the product with the details from the DTO
+            productToEdit.setProductName(productDTO.getProductName());
+            productToEdit.setProductDescription(productDTO.getProductDescription());
+            productToEdit.setPrice(productDTO.getPrice());
+            productToEdit.setStock(productDTO.getStock());
+
+            // Update image only if it's not null and different
+            if (productDTO.getImage() != null && !Objects.equals(productDTO.getImage(), productToEdit.getImage())) {
+                productToEdit.setImage(productDTO.getImage());
+            }
+
+            // Assuming you have a way to get the Shop entity from shopId
+//            Shop shop = shopsRepository.findById(productDTO.getShopId())
+//                    .orElseThrow(() -> new RuntimeException("Shop not found with id: " + productDTO.getShopId()));
+//            productToEdit.setShop(shop);
+
+            // Update the active status
+            productToEdit.setActive(productDTO.getIsActive());
+
+            // Save the updated product
             productRepository.save(productToEdit);
 
             return "Product edited successfully";

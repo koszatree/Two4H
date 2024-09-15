@@ -67,6 +67,18 @@ public class UserService {
         return Optional.empty();
     }
 
+    public List<User> getActiveUsers() {
+        return this.userRepository.findAllByIsActive(true);
+    }
+
+    public List<User> getCustomers() {
+        return this.userRepository.findAllByIsCustomer(true);
+    }
+
+    public List<User> getSellers() {
+        return this.userRepository.findAllByIsCustomer(false);
+    }
+
     public String editUser(int id, User choosenUser) {
         if(userRepository.existsById(id)) {
 

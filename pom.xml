@@ -55,7 +55,17 @@
 			<artifactId>hibernate-core</artifactId>
 			<version>6.4.4.Final</version>
 		</dependency>
-<!--		<dependency>-->
+        <dependency>
+            <groupId>com.two4h</groupId>
+            <artifactId>Two4H</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct</artifactId>
+			<version>1.6.0.RC1</version>
+		</dependency>
+		<!--		<dependency>-->
 <!--			<groupId>com.microsoft.sqlserver</groupId>-->
 <!--			<artifactId>mssql-jdbc</artifactId>-->
 <!--			<version>12.6.1.jre11</version>-->

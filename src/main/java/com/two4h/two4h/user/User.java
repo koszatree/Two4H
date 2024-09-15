@@ -1,8 +1,10 @@
 package com.two4h.two4h.user;
 
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.two4h.two4h.orders.Order;
 import com.two4h.two4h.shops.Shop;
 import jakarta.persistence.*;

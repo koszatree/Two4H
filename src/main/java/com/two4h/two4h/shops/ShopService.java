@@ -1,5 +1,7 @@
 package com.two4h.two4h.shops;
 
+import com.two4h.two4h.user.User;
+import com.two4h.two4h.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +11,9 @@ import java.util.List;
 public class ShopService {
     @Autowired
     private ShopsRepository shopsRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     public String addShop(Shop shop) {
         if(shopsRepository.findByShopName(shop.getShopName()).isPresent()){
@@ -24,22 +29,34 @@ public class ShopService {
         return this.shopsRepository.findAll();
     }
 
-    public String shopEdit(Shop shop) {
-        Shop shopToCheck = shopsRepository.findByShopName(shop.getShopName()).orElse(null);
-        assert shopToCheck != null;
-        if(shopToCheck.getShopName().equals(shop.getShopName()) && shopToCheck.getId() != (shop.getId())){
-            return "Shop already exists";
+    public Shop getShopById(int id) { return shopsRepository.findById(id).get(); }
+
+    public String shopEdit(int shopId, ShopDTO shopDTO) {
+        try {
+            // Find the existing shop entity by ID
+            Shop shopToEdit = shopsRepository.findById(shopId)
+                    .orElseThrow(() -> new RuntimeException("Shop not found with id: " + shopId));
+
+            // Find the owner user entity by ownerId from the DTO
+            User owner = userRepository.findById(shopDTO.getOwnerId())
+                    .orElseThrow(() -> new RuntimeException("User not found with id: " + shopDTO.getOwnerId()));
+
+            // Update the shop entity fields with the data from the DTO
+            shopToEdit.setShopName(shopDTO.getShopName());
+            shopToEdit.setLatitude(shopDTO.getLatitude());
+            shopToEdit.setLongtude(shopDTO.getLongitude());
+            shopToEdit.setActive(shopDTO.getIsActive());
+            shopToEdit.setOwner(owner); // Set the owner after fetching from the repository
+
+            // Save the updated shop entity back to the database
+            shopsRepository.save(shopToEdit);
+
+            // Return success message
+            return "Shop updated successfully!";
+        } catch (Exception e) {
+            // Return error message
+            return "Failed to update shop: " + e.getMessage();
         }
-
-        Shop shopToEdit = shopsRepository.findById(shop.getId()).get();
-        shopToEdit.setShopName(shop.getShopName());
-        shopToEdit.setOwner(shop.getOwner());
-        shopToEdit.setProducts(shop.getProducts());
-        shopToEdit.setLatitude(shop.getLatitude());
-        shopToEdit.setLongtude(shop.getLongtude());
-        shopsRepository.save(shopToEdit);
-
-        return "Shop edited successfully";
     }
 
     public List<Shop> getActiveShops() {

@@ -33,6 +33,21 @@ public class UserController {
         return userService.displayAllUsers();
     }
 
+    @GetMapping("/activeUsersData")
+    public List<User> getActiveUsersData() {
+        return userService.getActiveUsers();
+    }
+
+    @GetMapping("/customersData")
+    public List<User> getCustomersData() {
+        return userService.getCustomers();
+    }
+
+    @GetMapping("/sellersData")
+    public List<User> getSellersData() {
+        return userService.getSellers();
+    }
+
     @GetMapping(path = "/userByIdData")
     @ResponseBody
     public Optional<User> getUserById(@RequestParam("id") int id) {
