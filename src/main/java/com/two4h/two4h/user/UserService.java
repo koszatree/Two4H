@@ -79,30 +79,36 @@ public class UserService {
         return this.userRepository.findAllByIsCustomer(false);
     }
 
-    public String editUser(int id, User choosenUser) {
-        if(userRepository.existsById(id)) {
+    public String editUser(int id, UserDTO choosenUserDTO) {
+        // Check if the user exists
+        if (userRepository.existsById(id)) {
 
-            User userToCheck = userRepository.findByEmail(choosenUser.getEmail());
-
-            if (userToCheck.getEmail().equals(choosenUser.getEmail()) && userToCheck.getId() != choosenUser.getId()) {
+            // Check if the email is already used by another user
+            User userToCheck = userRepository.findByEmail(choosenUserDTO.getEmail());
+            if (userToCheck != null && userToCheck.getId() != id) {
                 return "This email is already in use";
             }
 
-            User editedUser = userRepository.findById(id).get();
-            editedUser.setFirstName(choosenUser.getFirstName());
-            editedUser.setLastName(choosenUser.getLastName());
-            editedUser.setBirthDate(choosenUser.getBirthDate());
-            editedUser.setEmail(choosenUser.getEmail());
-            editedUser.setPassword(choosenUser.getPassword());
-            editedUser.setIsCustomer(choosenUser.getIsCustomer());
-            editedUser.setIsActive(choosenUser.getIsActive());
+            // Fetch the user to be edited
+            User editedUser = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
 
+            // Update fields from the UserDTO
+            editedUser.setFirstName(choosenUserDTO.getFirstName());
+            editedUser.setLastName(choosenUserDTO.getLastName());
+            editedUser.setBirthDate(choosenUserDTO.getBirthDate());
+            editedUser.setEmail(choosenUserDTO.getEmail());
+            editedUser.setIsCustomer(choosenUserDTO.getIsCustomer());
+            editedUser.setIsActive(choosenUserDTO.getIsActive());
+
+            // Save the updated user
             userRepository.save(editedUser);
+
             System.out.println("User with id: " + editedUser.getId() + " has been updated");
             return "User Updated Successfully";
         }
 
         return "User Not Found";
     }
+
 
 }

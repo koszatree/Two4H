@@ -55,7 +55,7 @@ public class UserController {
     }
 
     @PutMapping("/edit")
-    public String updateUserData(@RequestParam("id") int id, @RequestBody User user){
+    public String updateUserData(@RequestParam("id") int id, @RequestBody UserDTO user){
         return userService.editUser(id, user);
     }
 }
