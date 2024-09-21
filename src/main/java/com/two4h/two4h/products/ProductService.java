@@ -28,7 +28,7 @@ public class ProductService {
     @Autowired
     private ShopsRepository shopsRepository;
 
-    public String addProduct(Product product) {
+    public String addProduct(ProductDTO product) {
         if(productRepository.existsByProductName(product.getProductName())){
             return "Product Already Exists";
         }

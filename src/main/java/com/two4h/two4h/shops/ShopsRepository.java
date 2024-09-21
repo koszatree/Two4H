@@ -14,4 +14,5 @@ import java.util.Optional;
 public interface ShopsRepository extends JpaRepository<Shop, Integer> {
     Optional<Shop> findByShopName(String name);
     List<Shop> findAllByIsActive(boolean isActive);
+    List<Shop> findAllByOwner(User owner);
 }

@@ -1,11 +1,13 @@
 package com.two4h.two4h.shops;
 
+import com.two4h.two4h.products.Product;
+import com.two4h.two4h.products.ProductDTO;
 import com.two4h.two4h.user.User;
 import com.two4h.two4h.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.*;
 
 @Service
 public class ShopService {
@@ -15,11 +17,12 @@ public class ShopService {
     @Autowired
     private UserRepository userRepository;
 
-    public String addShop(Shop shop) {
+    public String addShop(ShopDTO shop) {
         if(shopsRepository.findByShopName(shop.getShopName()).isPresent()){
             return "Shop already exists";
         }
-        Shop newShop = new Shop(shop.getShopName(), shop.getOwner(), null, shop.getLatitude(), shop.getLongtude(), true);
+
+        Shop newShop = new Shop(shop.getShopName(), userRepository.findById(shop.getOwnerId()).get(), null, shop.getLatitude(), shop.getLongitude(), true);
         shopsRepository.save(newShop);
 
         return "Shop added successfully";
@@ -30,6 +33,12 @@ public class ShopService {
     }
 
     public Shop getShopById(int id) { return shopsRepository.findById(id).get(); }
+
+    public List<Shop> getShopsByOwner(int ownerId) {
+        User owner = userRepository.findById(ownerId).get();
+
+        return shopsRepository.findAllByOwner(owner);
+    }
 
     public String shopEdit(int shopId, ShopDTO shopDTO) {
         try {
@@ -56,6 +65,90 @@ public class ShopService {
         } catch (Exception e) {
             // Return error message
             return "Failed to update shop: " + e.getMessage();
+        }
+    }
+
+    public String addProductsToShop(int id, List<ProductDTO> products) {
+        try{
+            Shop shop = shopsRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Shop not found with id: " + id));
+            Set<Product> productList = new Set<Product>() {
+                @Override
+                public int size() {
+                    return 0;
+                }
+
+                @Override
+                public boolean isEmpty() {
+                    return false;
+                }
+
+                @Override
+                public boolean contains(Object o) {
+                    return false;
+                }
+
+                @Override
+                public Iterator<Product> iterator() {
+                    return null;
+                }
+
+                @Override
+                public Object[] toArray() {
+                    return new Object[0];
+                }
+
+                @Override
+                public <T> T[] toArray(T[] a) {
+                    return null;
+                }
+
+                @Override
+                public boolean add(Product product) {
+                    return false;
+                }
+
+                @Override
+                public boolean remove(Object o) {
+                    return false;
+                }
+
+                @Override
+                public boolean containsAll(Collection<?> c) {
+                    return false;
+                }
+
+                @Override
+                public boolean addAll(Collection<? extends Product> c) {
+                    return false;
+                }
+
+                @Override
+                public boolean retainAll(Collection<?> c) {
+                    return false;
+                }
+
+                @Override
+                public boolean removeAll(Collection<?> c) {
+                    return false;
+                }
+
+                @Override
+                public void clear() {
+
+                }
+            };
+
+            for(ProductDTO product : products){
+                 productList.add(product.toEntity(shop));
+            }
+
+            shop.setProducts(productList);
+
+            return "Product added successfully!";
+
+        } catch (Exception e) {
+            return "Failed to add products to shop: " + e.getMessage();
         }
     }
 
