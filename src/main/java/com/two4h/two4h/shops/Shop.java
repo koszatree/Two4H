@@ -1,5 +1,7 @@
 package com.two4h.two4h.shops;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.two4h.two4h.products.Product;
 import com.two4h.two4h.user.User;
 import jakarta.persistence.*;
@@ -26,7 +28,7 @@ public class Shop {
     // mapped by shops
     @ManyToOne
     @JoinColumn(name = "user_id")
-    //@JsonBackReference("user-shops")
+    //@JsonBackReference
     //@JsonIgnore
     private User owner;
 
@@ -37,7 +39,7 @@ public class Shop {
     private boolean isActive;
 
     @OneToMany(mappedBy = "shop")
-//    @JsonManagedReference("shop-products")
+    //@JsonManagedReference
     private Set<Product> products; // Wielostronna relacja z Product
 
     public Shop(String shopName, User owner, Set<Product> products, double latitude, double longitude, boolean isActive) {

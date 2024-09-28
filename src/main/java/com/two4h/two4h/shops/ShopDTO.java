@@ -2,6 +2,7 @@ package com.two4h.two4h.shops;
 
 import com.two4h.two4h.orders.OrderDTO;
 import com.two4h.two4h.products.Product;
+import com.two4h.two4h.products.ProductDTO;
 import com.two4h.two4h.user.User;
 import com.two4h.two4h.user.UserDTO;
 import lombok.AllArgsConstructor;
@@ -9,7 +10,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.awt.*;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,9 +21,10 @@ import java.util.Set;
 public class ShopDTO {
     private int id;
     private String shopName;
-    private int ownerId; // Simplified to only include the owner's ID
+    private int ownerId;
     private double latitude;
     private double longitude;
+    private Set<ProductDTO> products;
     private boolean isActive;
 
     public boolean getIsActive(){
@@ -28,14 +32,23 @@ public class ShopDTO {
     }
 
     public static ShopDTO fromEntity(Shop shop) {
-        return new ShopDTO(
-                shop.getId(),
-                shop.getShopName(),
-                shop.getOwner() != null ? shop.getOwner().getId() : null, // Check if owner exists before getting ID
-                shop.getLatitude(),
-                shop.getLongtude(),
-                shop.getIsActive()
-        );
+        ShopDTO dto = new ShopDTO();
+        dto.setId(shop.getId());
+        dto.setShopName(shop.getShopName());
+        dto.setOwnerId(shop.getOwner() != null ? shop.getOwner().getId() : null);
+        dto.setLatitude(shop.getLatitude());
+        dto.setLongitude(shop.getLongtude());
+        dto.setIsActive(shop.getIsActive());
+
+        // Convert Set<Product> to Set<ProductDTO>
+        dto.setProducts(shop.getProducts().stream()
+                .map(ProductDTO::fromEntity)
+                .collect(Collectors.toSet()));
+        return dto;
+    }
+
+    private void setIsActive(boolean isActive) {
+        this.isActive = isActive;
     }
 
     public Shop toEntity(User owner) {
@@ -45,7 +58,13 @@ public class ShopDTO {
         shop.setLatitude(this.latitude);
         shop.setLongtude(this.longitude);
         shop.setActive(this.isActive);
-        shop.setOwner(owner); // Use the provided User entity for the owner
+        shop.setOwner(owner);
+
+        Set<Product> productEntities = this.products.stream()
+                .map(productDTO -> productDTO.toEntity(shop))
+                .collect(Collectors.toSet());
+        shop.setProducts(productEntities);
+
         return shop;
     }
 }

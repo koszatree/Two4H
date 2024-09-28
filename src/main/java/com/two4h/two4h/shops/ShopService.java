@@ -2,12 +2,14 @@ package com.two4h.two4h.shops;
 
 import com.two4h.two4h.products.Product;
 import com.two4h.two4h.products.ProductDTO;
+import com.two4h.two4h.products.ProductRepository;
 import com.two4h.two4h.user.User;
 import com.two4h.two4h.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ShopService {
@@ -17,27 +19,83 @@ public class ShopService {
     @Autowired
     private UserRepository userRepository;
 
-    public String addShop(ShopDTO shop) {
-        if(shopsRepository.findByShopName(shop.getShopName()).isPresent()){
+    @Autowired
+    private ProductRepository productRepository;
+
+    public String addShop(ShopDTO shopDTO) {
+        // Check if shop already exists
+        if(shopsRepository.findByShopName(shopDTO.getShopName()).isPresent()) {
             return "Shop already exists";
         }
 
-        Shop newShop = new Shop(shop.getShopName(), userRepository.findById(shop.getOwnerId()).get(), null, shop.getLatitude(), shop.getLongitude(), true);
-        shopsRepository.save(newShop);
+        // Retrieve the owner from the repository
+        User owner = userRepository.findById(shopDTO.getOwnerId())
+                .orElseThrow(() -> new RuntimeException("Owner not found"));
+
+        // Create a new shop entity
+        Shop newShop = new Shop(
+                shopDTO.getShopName(),
+                owner,
+                null,  // We will set the products later
+                shopDTO.getLatitude(),
+                shopDTO.getLongitude(),
+                true
+        );
+
+        // Save the shop first to generate an ID for the shop
+        Shop savedShop = shopsRepository.save(newShop);
+
+        // Handle products if they exist in the DTO
+        if (shopDTO.getProducts() != null && !shopDTO.getProducts().isEmpty()) {
+            Set<Product> products = new HashSet<>();
+            for (ProductDTO productDTO : shopDTO.getProducts()) {
+                // Convert the ProductDTO into a Product entity
+                Product product = productRepository.findById(productDTO.getId())
+                        .orElseThrow(() -> new RuntimeException("Product not found"));
+
+                // Set the shop for the product
+                product.setShop(savedShop);
+                products.add(product);
+            }
+
+            // Set the products for the new shop
+            newShop.setProducts(products);
+
+            // Save the shop again with the associated products
+            shopsRepository.save(newShop);
+        }
 
         return "Shop added successfully";
     }
 
-    public List<Shop> getAllShops() {
-        return this.shopsRepository.findAll();
+    public List<ShopDTO> getAllShops() {
+        return this.shopsRepository.findAll()
+                .stream()
+                .map(ShopDTO::fromEntity)
+                .collect(Collectors.toList());
     }
 
-    public Shop getShopById(int id) { return shopsRepository.findById(id).get(); }
+    public List<ProductDTO> getProductsFromShop(int id) {
+        return productRepository.findAllByShopId(id)
+                .stream()
+                .map(ProductDTO::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    public ShopDTO getShopById(int id) { return ShopDTO.fromEntity(shopsRepository.findById(id).get()); }
 
     public List<Shop> getShopsByOwner(int ownerId) {
         User owner = userRepository.findById(ownerId).get();
+        List<Shop> shopsByOwner = shopsRepository.findAllByOwner(owner);
+        List<Shop> shops = new ArrayList<>();
 
-        return shopsRepository.findAllByOwner(owner);
+        for(Shop shop : shopsByOwner){
+            if(shop.getIsActive()){
+                shops.add(shop);
+            }
+        }
+
+        return shops;
     }
 
     public String shopEdit(int shopId, ShopDTO shopDTO) {
@@ -68,82 +126,31 @@ public class ShopService {
         }
     }
 
-    public String addProductsToShop(int id, List<ProductDTO> products) {
-        try{
-            Shop shop = shopsRepository.findById(id)
-                    .orElseThrow(() -> new RuntimeException("Shop not found with id: " + id));
-            Set<Product> productList = new Set<Product>() {
-                @Override
-                public int size() {
-                    return 0;
-                }
+    public String addProductToShop(int shopId, ProductDTO productDTO) {
+        try {
+            // Retrieve the shop by ID
+            Shop shop = shopsRepository.findById(shopId)
+                    .orElseThrow(() -> new RuntimeException("Shop not found with id: " + shopId));
 
-                @Override
-                public boolean isEmpty() {
-                    return false;
-                }
+            // Convert the ProductDTO into a Product entity
+            Product newProduct = productDTO.toEntity(shop);
 
-                @Override
-                public boolean contains(Object o) {
-                    return false;
-                }
-
-                @Override
-                public Iterator<Product> iterator() {
-                    return null;
-                }
-
-                @Override
-                public Object[] toArray() {
-                    return new Object[0];
-                }
-
-                @Override
-                public <T> T[] toArray(T[] a) {
-                    return null;
-                }
-
-                @Override
-                public boolean add(Product product) {
-                    return false;
-                }
-
-                @Override
-                public boolean remove(Object o) {
-                    return false;
-                }
-
-                @Override
-                public boolean containsAll(Collection<?> c) {
-                    return false;
-                }
-
-                @Override
-                public boolean addAll(Collection<? extends Product> c) {
-                    return false;
-                }
-
-                @Override
-                public boolean retainAll(Collection<?> c) {
-                    return false;
-                }
-
-                @Override
-                public boolean removeAll(Collection<?> c) {
-                    return false;
-                }
-
-                @Override
-                public void clear() {
-
-                }
-            };
-
-            for(ProductDTO product : products){
-                 productList.add(product.toEntity(shop));
+            // Add the product to the shop's product set
+            Set<Product> products = shop.getProducts();
+            if (products == null) {
+                products = new HashSet<>();
             }
+            products.add(newProduct);
 
-            shop.setProducts(productList);
+            // Set the shop in the product entity
+            newProduct.setShop(shop);
+
+            // Save the product first
+            productRepository.save(newProduct);
+
+            // Save the shop with the updated product list
+            shop.setProducts(products);
+            shopsRepository.save(shop);
 
             return "Product added successfully!";
 

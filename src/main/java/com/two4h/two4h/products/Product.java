@@ -30,7 +30,7 @@ public class Product {
 
     @ManyToOne
     @JoinColumn(name = "shop_id")
-//    @JsonBackReference("shop-products")
+    //@JsonBackReference
     private Shop shop;
 
     private boolean isActive;

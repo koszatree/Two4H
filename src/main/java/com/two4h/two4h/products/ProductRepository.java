@@ -18,4 +18,5 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     @Query("SELECT p.image FROM Product p WHERE p.id = :id")
     String findOneImageById(@Param("id") int id);
     boolean existsByProductName(String name);
+    List<Product> findAllByShopId(int shopId);
 }

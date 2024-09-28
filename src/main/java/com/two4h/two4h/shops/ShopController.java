@@ -1,5 +1,6 @@
 package com.two4h.two4h.shops;
 
+import com.two4h.two4h.products.Product;
 import com.two4h.two4h.products.ProductDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,12 +22,12 @@ public class ShopController {
     }
 
     @GetMapping(path = "/shopsData")
-    public List<Shop> shopsData() {
+    public List<ShopDTO> shopsData() {
         return shopService.getAllShops();
     }
 
     @GetMapping(path = "/shopByIdData")
-    public Shop shopByIdData(@RequestParam("id") int id) {
+    public ShopDTO shopByIdData(@RequestParam("id") int id) {
         return shopService.getShopById(id);
     }
 
@@ -40,6 +41,11 @@ public class ShopController {
         return shopService.getActiveShops();
     }
 
+    @GetMapping(path = "/productsFromShop")
+    public List<ProductDTO> productsFromShop(@RequestParam("id") int id) {
+        return shopService.getProductsFromShop(id);
+    }
+
     @PutMapping(path = "/editShop")
     public ResponseEntity<String> editShops(@RequestParam("id") int id, @RequestBody ShopDTO shop) {
         String result = shopService.shopEdit(id, shop);
@@ -51,9 +57,9 @@ public class ShopController {
         }
     }
 
-    @PutMapping(path = "/addProductsToShop")
-    public ResponseEntity<String> addProductsToShop(@RequestParam("id") int id, @RequestBody List<ProductDTO> products) {
-        String result = shopService.addProductsToShop(id, products);
+    @PutMapping(path = "/addProductToShop")
+    public ResponseEntity<String> addProductToShop(@RequestParam("id") int id, @RequestBody ProductDTO products) {
+        String result = shopService.addProductToShop(id, products);
         if(result.equals("Product added successfully!")) {
             return ResponseEntity.ok(result);
         } else {
