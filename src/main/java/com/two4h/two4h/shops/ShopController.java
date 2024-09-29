@@ -32,12 +32,12 @@ public class ShopController {
     }
 
     @GetMapping(path = "/shopsByOwner")
-    public List<Shop> shopsByOwner(@RequestParam("id") int ownerId) {
+    public List<ShopDTO> shopsByOwner(@RequestParam("id") int ownerId) {
         return shopService.getShopsByOwner(ownerId);
     }
 
     @GetMapping(path = "/activeShops")
-    public List<Shop> activeShopsData() {
+    public List<ShopDTO> activeShopsData() {
         return shopService.getActiveShops();
     }
 

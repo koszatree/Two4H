@@ -22,17 +22,17 @@ public class ProductController {
     }
 
     @GetMapping(path = "/productData")
-    public List<Product> productData(){
+    public List<ProductDTO> productData(){
         return productService.getAllProducts();
     }
 
     @GetMapping(path = "/activeProducts")
-    public List<Product> activeProductData(){
+    public List<ProductDTO> activeProductData(){
         return productService.getActiveProducts();
     }
 
     @GetMapping(path = "/productByIdData")
-    public Product productByIdData(@RequestParam("id") int id){
+    public ProductDTO productByIdData(@RequestParam("id") int id){
         return productService.getProductById(id);
     }
 

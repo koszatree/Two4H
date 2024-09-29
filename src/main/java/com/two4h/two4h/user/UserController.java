@@ -29,28 +29,28 @@ public class UserController {
     }
 
     @GetMapping(path = "/userData")
-    public List<User> getUserData() {
+    public List<UserDTO> getUserData() {
         return userService.displayAllUsers();
     }
 
     @GetMapping("/activeUsersData")
-    public List<User> getActiveUsersData() {
+    public List<UserDTO> getActiveUsersData() {
         return userService.getActiveUsers();
     }
 
     @GetMapping("/customersData")
-    public List<User> getCustomersData() {
+    public List<UserDTO> getCustomersData() {
         return userService.getCustomers();
     }
 
     @GetMapping("/sellersData")
-    public List<User> getSellersData() {
+    public List<UserDTO> getSellersData() {
         return userService.getSellers();
     }
 
     @GetMapping(path = "/userByIdData")
     @ResponseBody
-    public Optional<User> getUserById(@RequestParam("id") int id) {
+    public Optional<UserDTO> getUserById(@RequestParam("id") int id) {
         return userService.getUserById(id);
     }
 

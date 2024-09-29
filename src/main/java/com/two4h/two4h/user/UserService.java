@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -56,27 +57,40 @@ public class UserService {
         }
     }
 
-    public List<User> displayAllUsers() {
-        return this.userRepository.findAll();
+    public List<UserDTO> displayAllUsers() {
+        return this.userRepository.findAll()
+                .stream()
+                .map(UserDTO::fromEntity)
+                .collect(Collectors.toList());
     }
 
-    public Optional<User> getUserById(int id) {
+    public Optional<UserDTO> getUserById(int id) {
+        User user = this.userRepository.findById(id).get();
         if (this.userRepository.findById(id).isPresent()) {
-            return this.userRepository.findById(id);
+            return Optional.of(UserDTO.fromEntity(user));
         }
         return Optional.empty();
     }
 
-    public List<User> getActiveUsers() {
-        return this.userRepository.findAllByIsActive(true);
+    public List<UserDTO> getActiveUsers() {
+        return this.userRepository.findAllByIsActive(true)
+                .stream()
+                .map(UserDTO::fromEntity)
+                .collect(Collectors.toList());
     }
 
-    public List<User> getCustomers() {
-        return this.userRepository.findAllByIsCustomer(true);
+    public List<UserDTO> getCustomers() {
+        return this.userRepository.findAllByIsCustomer(true)
+                .stream()
+                .map(UserDTO::fromEntity)
+                .collect(Collectors.toList());
     }
 
-    public List<User> getSellers() {
-        return this.userRepository.findAllByIsCustomer(false);
+    public List<UserDTO> getSellers() {
+        return this.userRepository.findAllByIsCustomer(false)
+                .stream()
+                .map(UserDTO::fromEntity)
+                .collect(Collectors.toList());
     }
 
     public String editUser(int id, UserDTO choosenUserDTO) {

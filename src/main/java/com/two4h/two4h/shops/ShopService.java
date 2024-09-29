@@ -84,7 +84,7 @@ public class ShopService {
 
     public ShopDTO getShopById(int id) { return ShopDTO.fromEntity(shopsRepository.findById(id).get()); }
 
-    public List<Shop> getShopsByOwner(int ownerId) {
+    public List<ShopDTO> getShopsByOwner(int ownerId) {
         User owner = userRepository.findById(ownerId).get();
         List<Shop> shopsByOwner = shopsRepository.findAllByOwner(owner);
         List<Shop> shops = new ArrayList<>();
@@ -95,7 +95,10 @@ public class ShopService {
             }
         }
 
-        return shops;
+        return shops
+                .stream()
+                .map(ShopDTO::fromEntity)
+                .collect(Collectors.toList());
     }
 
     public String shopEdit(int shopId, ShopDTO shopDTO) {
@@ -159,7 +162,10 @@ public class ShopService {
         }
     }
 
-    public List<Shop> getActiveShops() {
-        return this.shopsRepository.findAllByIsActive(true);
+    public List<ShopDTO> getActiveShops() {
+        return this.shopsRepository.findAllByIsActive(true)
+                .stream()
+                .map(ShopDTO::fromEntity)
+                .collect(Collectors.toList());
     }
 }

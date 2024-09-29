@@ -19,6 +19,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -77,16 +78,22 @@ public class ProductService {
         return "Product Not Found";
     }
 
-    public List<Product> getAllProducts() {
-        return this.productRepository.findAll();
+    public List<ProductDTO> getAllProducts() {
+        return this.productRepository.findAll()
+                .stream()
+                .map(ProductDTO::fromEntity)
+                .collect(Collectors.toList());
     }
 
-    public List<Product> getActiveProducts() {
-        return this.productRepository.findAllByIsActive(true);
+    public List<ProductDTO> getActiveProducts() {
+        return this.productRepository.findAllByIsActive(true)
+                .stream()
+                .map(ProductDTO::fromEntity)
+                .collect(Collectors.toList());
     }
 
-    public Product getProductById(int id) {
-        return this.productRepository.findById(id).get();
+    public ProductDTO getProductById(int id) {
+        return ProductDTO.fromEntity(this.productRepository.findById(id).get());
     }
 
     public ResponseEntity<Resource> getImage(int id) throws MalformedURLException {

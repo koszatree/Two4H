@@ -14,7 +14,7 @@ public class ProductDTO {
     private double price;
     private int stock;
     private String image; // Assuming image is a base64 encoded string
-    private int shopId; // Only the ID of the associated shop
+    private Integer shopId; // Only the ID of the associated shop
     private boolean isActive;
 
     public boolean getIsActive(){
