@@ -76,7 +76,7 @@ public class ShopService {
     }
 
     public List<ProductDTO> getProductsFromShop(int id) {
-        return productRepository.findAllByShopId(id)
+        return productRepository.findAllByShop(id)
                 .stream()
                 .map(ProductDTO::fromEntity)
                 .collect(Collectors.toList());
@@ -129,6 +129,9 @@ public class ShopService {
         }
     }
 
+    // PROBLEM: All products has one shopId, every time we add specific product to the shop it is deleted from another.
+    // FIX IDEA: Add new product entity to the database, containing id of the shop.
+    // RISK: Too much common elements (the same product entities with only different shopId)
     public String addProductToShop(int shopId, ProductDTO productDTO) {
         try {
             // Retrieve the shop by ID
