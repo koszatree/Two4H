@@ -131,6 +131,9 @@ public class ShopService {
 
     // PROBLEM: All products has one shopId, every time we add specific product to the shop it is deleted from another.
     // FIX IDEA: Add new product entity to the database, containing id of the shop.
+    // IDEA 2: Separate product entity for products in shop (solution bypasses problem with adding products - elements from all shops "doubled" which causes a transparency problem)
+    // IDEA 3: Adding method to return products without shop connected (NULL shopId value) and adding this products to shop as new entity
+    // Also, shop owner should be able to edit product stock (and price ?)
     // RISK: Too much common elements (the same product entities with only different shopId)
     public String addProductToShop(int shopId, ProductDTO productDTO) {
         try {
@@ -138,30 +141,22 @@ public class ShopService {
             Shop shop = shopsRepository.findById(shopId)
                     .orElseThrow(() -> new RuntimeException("Shop not found with id: " + shopId));
 
-            // Convert the ProductDTO into a Product entity
+            // Create a new product entity from the DTO for this specific shop
             Product newProduct = productDTO.toEntity(shop);
+            newProduct.setId(productRepository.findMaxId() + 1);
 
-            // Add the product to the shop's product set
-            Set<Product> products = shop.getProducts();
-            if (products == null) {
-                products = new HashSet<>();
-            }
-            products.add(newProduct);
-
-            // Set the shop in the product entity
-            newProduct.setShop(shop);
-
-            // Save the product first
+            // Save the new product in the database
             productRepository.save(newProduct);
 
-            // Save the shop with the updated product list
-            shop.setProducts(products);
+            // Add the product to the shop's product list5
+            shop.getProducts().add(newProduct);
+
+            // Save the shop with the new product
             shopsRepository.save(shop);
 
-            return "Product added successfully!";
-
+            return "Product added to shop successfully!";
         } catch (Exception e) {
-            return "Failed to add products to shop: " + e.getMessage();
+            return "Failed to add product to shop: " + e.getMessage();
         }
     }
 

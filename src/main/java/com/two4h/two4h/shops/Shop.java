@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @NoArgsConstructor
@@ -41,6 +42,7 @@ public class Shop {
     @OneToMany(mappedBy = "shop")
     //@JsonManagedReference
     private Set<Product> products; // Wielostronna relacja z Product
+
 
     public Shop(String shopName, User owner, Set<Product> products, double latitude, double longitude, boolean isActive) {
         this.shopName = shopName;

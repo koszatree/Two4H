@@ -92,6 +92,20 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
+    public List<ProductDTO> getNeutralProducts() {
+        return this.productRepository.findAllProductsByNull()
+                .stream()
+                .map(ProductDTO::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    public List<ProductDTO> getActiveNeutralProducts() {
+        return this.productRepository.findAllActiveProductsByNull()
+                .stream()
+                .map(ProductDTO::fromEntity)
+                .collect(Collectors.toList());
+    }
+
     public ProductDTO getProductById(int id) {
         return ProductDTO.fromEntity(this.productRepository.findById(id).get());
     }

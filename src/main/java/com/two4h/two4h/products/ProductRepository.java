@@ -21,4 +21,10 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     List<Product> findAllByShopId(int shopId);
     @Query("SELECT p FROM Product p WHERE p.isActive = TRUE AND p.shop.id = :shopId")
     List<Product> findAllByShop(@Param("shopId") int shopId);
+    @Query("SELECT p FROM Product p WHERE p.shop.id IS NULL")
+    List<Product> findAllProductsByNull();
+    @Query("SELECT p FROM Product p WHERE p.shop.id IS NULL AND p.isActive = TRUE")
+    List<Product> findAllActiveProductsByNull();
+    @Query("SELECT p.id FROM Product p ORDER BY p.id DESC LIMIT 1")
+    Integer findMaxId();
 }

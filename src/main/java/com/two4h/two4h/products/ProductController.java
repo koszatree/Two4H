@@ -31,6 +31,16 @@ public class ProductController {
         return productService.getActiveProducts();
     }
 
+    @GetMapping(path = "/neutralProducts")
+    public List<ProductDTO> neutralProductData(){
+        return productService.getNeutralProducts();
+    }
+
+    @GetMapping(path = "/neutralActiveProducts")
+    public List<ProductDTO> neutralActiveProducts() {
+        return productService.getActiveNeutralProducts();
+    }
+
     @GetMapping(path = "/productByIdData")
     public ProductDTO productByIdData(@RequestParam("id") int id){
         return productService.getProductById(id);
