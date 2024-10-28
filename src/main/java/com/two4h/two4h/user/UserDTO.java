@@ -28,7 +28,7 @@ public class UserDTO {
 
     public static UserDTO fromEntity(User user) {
         Set<OrderDTO> orderDTOs = user.getOrdersPlaced().stream()
-                .map(OrderDTO::convertToDto) // Use OrderConverter to convert each Order to OrderDTO
+                .map(OrderDTO::fromEntity) // Use OrderConverter to convert each Order to OrderDTO
                 .collect(Collectors.toSet());
 
         return new UserDTO(

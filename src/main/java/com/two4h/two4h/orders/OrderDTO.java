@@ -24,7 +24,7 @@ public class OrderDTO {
     private double orderTotal;
     private Set<ProductDTO> products; // Reference to the ProductDTO instead of the Product entity
 
-    public static OrderDTO convertToDto(Order order) {
+    public static OrderDTO fromEntity(Order order) {
         Set<ProductDTO> productDTOs = order.getProducts().stream()
                 .map(ProductDTO::fromEntity)
                 .collect(Collectors.toSet());
@@ -40,7 +40,7 @@ public class OrderDTO {
     }
 
     // Convert OrderDTO to Order entity
-    public static Order convertToEntity(OrderDTO orderDTO, User user, Set<Product> products) {
+    public static Order toEntity(OrderDTO orderDTO, User user, Set<Product> products) {
         Order order = new Order();
         order.setId(orderDTO.getId());
         order.setUser(user); // Assign User entity

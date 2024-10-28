@@ -40,13 +40,6 @@ public class ProductService {
 
     public String editProduct(int id, ProductDTO productDTO) {
         if (productRepository.existsById(id)) {
-            // Check if a product with the same name already exists, except for the one being updated
-            Product existingProduct = productRepository.findByProductName(productDTO.getProductName());
-
-            if (existingProduct != null && existingProduct.getId() != id) {
-                return "This Product Already Exists";
-            }
-
             // Fetch the product to be edited
             Product productToEdit = productRepository.findById(id).get();
 
@@ -57,9 +50,9 @@ public class ProductService {
             productToEdit.setStock(productDTO.getStock());
 
             // Update image only if it's not null and different
-            if (productDTO.getImage() != null && !Objects.equals(productDTO.getImage(), productToEdit.getImage())) {
-                productToEdit.setImage(productDTO.getImage());
-            }
+//            if (productDTO.getImage() != null && !Objects.equals(productDTO.getImage(), productToEdit.getImage())) {
+//                productToEdit.setImage(productDTO.getImage());
+//            }
 
             // Assuming you have a way to get the Shop entity from shopId
 //            Shop shop = shopsRepository.findById(productDTO.getShopId())
